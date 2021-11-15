@@ -12,6 +12,7 @@ $productModel = new ProductModel();
 
 $page = (isset($_GET["page"])) ? $_GET["page"] : "";
 $username = ($_SESSION["username"] ?? "");
+$search = $_REQUEST['search'] ?? null;
 
 ?>
 
@@ -33,12 +34,7 @@ $username = ($_SESSION["username"] ?? "");
 <?php
 switch ($page) {
     case "product-list":
-        if (!isset($_GET['search'])) {
             $productController->index();
-        }else {
-            $productController->search();
-        }
-
         break;
     case "product-create":
         if ($_SERVER["REQUEST_METHOD"] == "GET") {
@@ -59,16 +55,18 @@ switch ($page) {
             $productController->edit($id, $_REQUEST);
         }
         break;
-    case "search":
-        $productController->search();
-            break;
     case "product-detail":
         $id = $_GET["id"];
         $productController->showDetail($id);
         break;
-
     default:
-        $productController->index();
+        if ($search == null) {
+            $productController->index();
+
+        } else {
+            $productController->search($search);
+        }
+        break;
 }
 ?>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

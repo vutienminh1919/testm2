@@ -69,15 +69,10 @@ class ProductController
         header("Location:index.php?page=product-list");
     }
 
-    public function search()
+    public function search($key)
     {
-        $key = $_GET["search"];
-        if (empty($key)){
-            echo "hay nhap vao";
-        }else{
-            $this->productModel->search($key);
-            include "app/view/product/list.php";
-        }
+            $products = $this->productModel->search($key);
+            include "app/view/product/searchList.php";
 
     }
 
